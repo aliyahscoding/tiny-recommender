@@ -1,70 +1,27 @@
-\# Tiny Item-Item Recommender
+# Tiny Item-Item Recommender
 
+A minimal, portfolio-friendly item–item collaborative filtering demo in Python. It builds a user–item matrix from a toy dataset, computes cosine similarity between items, and recommends top-N items for a chosen user.
 
+## How it works
 
-A minimal, portfolio-friendly item–item collaborative filtering demo in Python.  
+1. **User–item matrix**: pivot ratings into a matrix (users as rows, items as columns). Missing ratings are treated as 0.  
+2. **Item–item similarity**: compute cosine similarity between item vectors:
 
-It builds a user–item matrix from a tiny toy dataset, computes cosine similarity between items, and recommends top-N items for a chosen user.
+   $$
+   \cos(\theta) = \frac{\mathbf{x}\cdot\mathbf{y}}{\lVert \mathbf{x}\rVert\,\lVert \mathbf{y}\rVert}
+   $$
 
+3. **Scoring**: for each unseen item \(j\),
+   \[
+   \text{score}(j)=\sum_i \text{sim}(j,i)\times \text{rating}(u,i)
+   \]
+   then normalize by the total similarity weight to avoid popularity bias.
 
-
-\## How it works
-
-1\. \*\*User–item matrix\*\*: pivot ratings into a matrix (users as rows, items as columns). Missing ratings are treated as 0.
-
-2\. \*\*Item–item similarity\*\*: cosine similarity between item vectors  
-
-&nbsp;  \\\[
-
-&nbsp;  \\cos(\\theta) = \\frac{\\mathbf{x}\\cdot\\mathbf{y}}{\\|\\mathbf{x}\\|\\,\\|\\mathbf{y}\\|}
-
-&nbsp;  \\]
-
-3\. \*\*Scoring\*\*: for each unseen item j, score = sum over items i the user rated of `sim(j,i) \* rating(user,i)`, normalized by the total similarity weight.
-
-
-
-\## Quickstart
+## Quickstart
 
 ```bash
-
+# 1) Create toy ratings (writes to data/ratings.csv)
 python recommender.py --generate-data
 
-python recommender.py --user U3 --top\_n 5
-
-
-
-
-
-Use scikit-learn’s implementation if you prefer:
-
-pip install scikit-learn
-
-python recommender.py --user U3 --top\_n 5 --method sklearn
-
-
-
-
-
-Files
-
-recommender.py – all logic and a tiny CLI
-
-data/ratings.csv – toy ratings (auto-generated)
-
-requirements.txt – dependencies
-
-.gitignore – keeps the repo clean
-
-
-
-
-
-
-
-Notes
-
-This is intentionally tiny and readable. Perfect for explaining item–item CF in interviews.
-
-Extend by adding user-based CF, top-K neighbors, or a train/test split with metrics.
-
+# 2) Get top-5 recommendations for user U3
+python recommender.py --user U3 --top_n 5
