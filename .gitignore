@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual env
+.venv/
+
+# VS Code
+.vscode/
+
+# Data you don't want to commit later
+data/*.parquet
+data/*.feather
